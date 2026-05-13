@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+
+# Generated examples and visualizations
+examples/
+*.html
+
+.DS_Store
+*.log

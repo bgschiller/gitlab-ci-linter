@@ -1,0 +1,47 @@
+{
+  "name": "gitlab-ci-linter",
+  "version": "0.0.1",
+  "description": "A linter for GitLab CI files",
+  "license": "MIT",
+  "keywords": [
+    "gitlab",
+    "gitlab-ci",
+    "linter",
+    "ci",
+    "yaml"
+  ],
+  "main": "dist/index.js",
+  "bin": {
+    "gitlab-ci-linter": "dist/index.js"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "yaml": "^2.4.5",
+    "glob": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.5.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

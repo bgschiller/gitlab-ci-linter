@@ -1,0 +1,68 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  NODE_VERSION: '18'
+  APP_NAME: 'my-app'
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+.base_job:
+  image: node:${NODE_VERSION}
+  before_script:
+    - npm install
+  variables:
+    ENVIRONMENT: 'development'
+
+test:
+  extends: .base_job
+  stage: test
+  script:
+    - npm test
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - 'src/**/*'
+        - 'package.json'
+
+build:
+  extends: .base_job
+  stage: build
+  script:
+    - npm run build
+  dependencies:
+    - test
+  artifacts:
+    paths:
+      - dist/
+      - coverage/
+    expire_in: '1 week'
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - 'src/**/*'
+        - 'package.json'
+        - 'pnpm-lock.yaml'
+
+deploy_manual:
+  stage: deploy
+  script:
+    - echo "Deploying ${APP_NAME}"
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      when: manual
+  dependencies:
+    - build
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploying to staging"
+  when: manual
+  dependencies:
+    - test
