@@ -22,7 +22,7 @@ Comprehensive guide to using gitlab-ci-linter for validating, analyzing, and tes
 
 ```bash
 # Build the tool
-npx nx build gitlab-ci-linter
+pnpm build
 
 # Basic linting
 ./dist/index.js .gitlab-ci.yml
